@@ -1,6 +1,6 @@
 {
   "name": "fusio/adapter-elasticsearch",
-  "description": "Adapter which helps to work with an elasticsearch server",
+  "description": "Provides a connection to work with an elasticsearch database",
   "homepage": "http://fusio-project.org",
   "keywords": ["fusio-adapter"],
   "license": "AGPL-3.0",
