@@ -49,9 +49,9 @@ class Elasticsearch implements ConnectionInterface
     {
         $builder = ClientBuilder::create();
 
-        $hosts = $config->get('hosts');
-        if (!empty($hosts)) {
-            $builder->setHosts(explode(',', $hosts));
+        $hosts = $config->get('host');
+        if (is_array($hosts)) {
+            $builder->setHosts($hosts);
         }
 
         return $builder->build();
@@ -59,6 +59,6 @@ class Elasticsearch implements ConnectionInterface
 
     public function configure(BuilderInterface $builder, ElementFactoryInterface $elementFactory)
     {
-        $builder->add($elementFactory->newInput('hosts', 'Hosts', 'text', 'Comma separated list of elasticsearch hosts i.e. <code>192.168.1.1:9200,192.168.1.2</code>'));
+        $builder->add($elementFactory->newTag('host', 'Host', 'Comma separated list of elasticsearch hosts i.e. <code>192.168.1.1:9200,192.168.1.2</code>'));
     }
 }
