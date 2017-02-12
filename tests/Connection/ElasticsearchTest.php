@@ -42,16 +42,16 @@ class ElasticsearchTest extends \PHPUnit_Framework_TestCase
 
     public function testGetConnection()
     {
-        /** @var Elasticsearch $connection */
-        $connection = $this->getConnectionFactory()->factory(Elasticsearch::class);
+        /** @var Elasticsearch $connectionFactory */
+        $connectionFactory = $this->getConnectionFactory()->factory(Elasticsearch::class);
 
         $config = new Parameters([
-            'hosts' => '127.0.0.1',
+            'host' => ['127.0.0.1'],
         ]);
 
-        $client = $connection->getConnection($config);
+        $connection = $connectionFactory->getConnection($config);
 
-        $this->assertInstanceOf(Client::class, $client);
+        $this->assertInstanceOf(Client::class, $connection);
     }
 
     public function testConfigure()
@@ -67,5 +67,19 @@ class ElasticsearchTest extends \PHPUnit_Framework_TestCase
         $elements = $builder->getForm()->getProperty('element');
         $this->assertEquals(1, count($elements));
         $this->assertInstanceOf(Tag::class, $elements[0]);
+    }
+
+    public function testPing()
+    {
+        /** @var Elasticsearch $connectionFactory */
+        $connectionFactory = $this->getConnectionFactory()->factory(Elasticsearch::class);
+
+        $config = new Parameters([
+            'host' => ['127.0.0.1'],
+        ]);
+
+        $connection = $connectionFactory->getConnection($config);
+
+        $this->assertTrue($connectionFactory->ping($connection));
     }
 }

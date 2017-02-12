@@ -21,7 +21,9 @@
 
 namespace Fusio\Adapter\Elasticsearch\Connection;
 
+use Elasticsearch\Client;
 use Elasticsearch\ClientBuilder;
+use Fusio\Engine\Connection\PingableInterface;
 use Fusio\Engine\ConnectionInterface;
 use Fusio\Engine\Form\BuilderInterface;
 use Fusio\Engine\Form\ElementFactoryInterface;
@@ -34,7 +36,7 @@ use Fusio\Engine\ParametersInterface;
  * @license http://www.gnu.org/licenses/agpl-3.0
  * @link    http://fusio-project.org
  */
-class Elasticsearch implements ConnectionInterface
+class Elasticsearch implements ConnectionInterface, PingableInterface
 {
     public function getName()
     {
@@ -60,5 +62,14 @@ class Elasticsearch implements ConnectionInterface
     public function configure(BuilderInterface $builder, ElementFactoryInterface $elementFactory)
     {
         $builder->add($elementFactory->newTag('host', 'Host', 'Comma separated list of elasticsearch hosts i.e. <code>192.168.1.1:9200,192.168.1.2</code>'));
+    }
+
+    public function ping($connection)
+    {
+        if ($connection instanceof Client) {
+            return $connection->ping();
+        } else {
+            return false;
+        }
     }
 }
