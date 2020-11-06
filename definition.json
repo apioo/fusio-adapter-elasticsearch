@@ -1,4 +1,10 @@
 {
+  "actionClass": [
+    "Fusio\\Adapter\\Elasticsearch\\Action\\ElasticsearchDelete",
+    "Fusio\\Adapter\\Elasticsearch\\Action\\ElasticsearchGet",
+    "Fusio\\Adapter\\Elasticsearch\\Action\\ElasticsearchIndex",
+    "Fusio\\Adapter\\Elasticsearch\\Action\\ElasticsearchSearch"
+  ],
   "connectionClass": [
     "Fusio\\Adapter\\Elasticsearch\\Connection\\Elasticsearch"
   ]
