@@ -14,9 +14,9 @@ jobs:
          - 8.0
     services:
       elasticsearch:
-        image: elasticsearch:7.13.2
+        image: elasticsearch:6.8.16
         options: >-
-          --health-cmd "wget http://localhost:9200/_cluster/health -O -"
+          --health-cmd "wget http://localhost:9200 -O -"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
