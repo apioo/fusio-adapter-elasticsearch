@@ -22,6 +22,7 @@
 namespace Fusio\Adapter\Elasticsearch\Action;
 
 use Fusio\Engine\ContextInterface;
+use Fusio\Engine\Exception\ConfigurationException;
 use Fusio\Engine\ParametersInterface;
 use Fusio\Engine\RequestInterface;
 use PSX\Http\Environment\HttpResponseInterface;
@@ -44,8 +45,13 @@ class ElasticsearchGet extends ElasticsearchAbstract
     {
         $connection = $this->getConnection($configuration);
 
+        $index = $configuration->get('index');
+        if (empty($index)) {
+            throw new ConfigurationException('No index provided');
+        }
+
         $params = [
-            'index' => $request->get('index'),
+            'index' => $index,
             'id'    => $request->get('id'),
         ];
 

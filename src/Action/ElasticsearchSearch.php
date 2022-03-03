@@ -22,6 +22,7 @@
 namespace Fusio\Adapter\Elasticsearch\Action;
 
 use Fusio\Engine\ContextInterface;
+use Fusio\Engine\Exception\ConfigurationException;
 use Fusio\Engine\ParametersInterface;
 use Fusio\Engine\RequestInterface;
 use PSX\Http\Environment\HttpResponseInterface;
@@ -44,10 +45,34 @@ class ElasticsearchSearch extends ElasticsearchAbstract
     {
         $connection = $this->getConnection($configuration);
 
+        $index = $configuration->get('index');
+        if (empty($index)) {
+            throw new ConfigurationException('No index provided');
+        }
+
+        $match = array_filter([
+            'query' => $request->get('query'),
+            'analyzer' => $request->get('analyzer'),
+            'auto_generate_synonyms_phrase_query' => $request->get('auto_generate_synonyms_phrase_query'),
+            'fuzziness' => $request->get('fuzziness'),
+            'max_expansions' => $request->get('max_expansions'),
+            'prefix_length' => $request->get('prefix_length'),
+            'fuzzy_transpositions' => $request->get('fuzzy_transpositions'),
+            'fuzzy_rewrite' => $request->get('fuzzy_rewrite'),
+            'lenient' => $request->get('lenient'),
+            'operator' => $request->get('operator'),
+            'minimum_should_match' => $request->get('minimum_should_match'),
+            'zero_terms_query' => $request->get('zero_terms_query'),
+        ], function($value){
+            return $value !== null;
+        });
+
         $params = [
-            'index' => $request->get('index'),
+            'index' => $index,
             'body'  => [
-                'query' => $request->get('query')
+                'query' => [
+                    'match' => $match,
+                ]
             ]
         ];
 

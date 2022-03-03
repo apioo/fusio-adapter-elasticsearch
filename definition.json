@@ -7,5 +7,8 @@
   ],
   "connectionClass": [
     "Fusio\\Adapter\\Elasticsearch\\Connection\\Elasticsearch"
+  ],
+  "routesClass": [
+    "Fusio\\Adapter\\Elasticsearch\\Routes\\ElasticsearchDocument"
   ]
 }
