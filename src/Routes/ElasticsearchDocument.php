@@ -53,7 +53,7 @@ class ElasticsearchDocument implements ProviderInterface
 
     public function getName(): string
     {
-        return 'Mongo-Collection';
+        return 'Elasticsearch-Document';
     }
 
     public function setup(SetupInterface $setup, string $basePath, ParametersInterface $configuration): void
