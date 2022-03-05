@@ -6,46 +6,8 @@
         "query": {
           "type": "string"
         },
-        "analyzer": {
-          "type": "string"
-        },
-        "auto_generate_synonyms_phrase_query": {
-          "type": "boolean"
-        },
-        "fuzziness": {
-          "type": "string"
-        },
-        "max_expansions": {
+        "startIndex": {
           "type": "integer"
-        },
-        "prefix_length": {
-          "type": "integer"
-        },
-        "fuzzy_transpositions": {
-          "type": "boolean"
-        },
-        "fuzzy_rewrite": {
-          "type": "string"
-        },
-        "lenient": {
-          "type": "boolean"
-        },
-        "operator": {
-          "type": "string",
-          "enum": [
-            "OR",
-            "AND"
-          ]
-        },
-        "minimum_should_match": {
-          "type": "string"
-        },
-        "zero_terms_query": {
-          "type": "string",
-          "enum": [
-            "none",
-            "all"
-          ]
         }
       }
     }
