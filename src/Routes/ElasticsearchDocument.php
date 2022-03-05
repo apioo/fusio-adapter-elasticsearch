@@ -138,8 +138,8 @@ class ElasticsearchDocument implements ProviderInterface
 
     public function configure(BuilderInterface $builder, ElementFactoryInterface $elementFactory): void
     {
-        $builder->add($elementFactory->newConnection('connection', 'Connection', 'The mongo connection which should be used'));
-        $builder->add($elementFactory->newInput('collection', 'Collection', 'text', 'Name of the collection'));
+        $builder->add($elementFactory->newConnection('connection', 'Connection', 'The elasticsearch connection which should be used'));
+        $builder->add($elementFactory->newInput('index', 'Index', 'text', 'Name of the index'));
     }
 
     private function getPrefix(string $path): string

@@ -56,8 +56,11 @@ class ElasticsearchIndex extends ElasticsearchAbstract
             'body'  => $request->getPayload()
         ];
 
-        $response = $connection->index($params);
+        $connection->index($params);
 
-        return $this->response->build(200, [], $response);
+        return $this->response->build(200, [], [
+            'success' => true,
+            'message' => 'Document successfully updated',
+        ]);
     }
 }

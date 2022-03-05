@@ -55,8 +55,11 @@ class ElasticsearchDelete extends ElasticsearchAbstract
             'id'    => $request->get('id'),
         ];
 
-        $response = $connection->delete($params);
+        $connection->delete($params);
 
-        return $this->response->build(200, [], $response);
+        return $this->response->build(200, [], [
+            'success' => true,
+            'message' => 'Document successfully deleted'
+        ]);
     }
 }

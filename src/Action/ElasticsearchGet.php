@@ -57,6 +57,8 @@ class ElasticsearchGet extends ElasticsearchAbstract
 
         $response = $connection->get($params);
 
-        return $this->response->build(200, [], $response);
+        $body = ['_id' => $response['_id']] + $response['_source'];
+
+        return $this->response->build(200, [], $body);
     }
 }

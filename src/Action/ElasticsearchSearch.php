@@ -23,9 +23,12 @@ namespace Fusio\Adapter\Elasticsearch\Action;
 
 use Fusio\Engine\ContextInterface;
 use Fusio\Engine\Exception\ConfigurationException;
+use Fusio\Engine\Form\BuilderInterface;
+use Fusio\Engine\Form\ElementFactoryInterface;
 use Fusio\Engine\ParametersInterface;
 use Fusio\Engine\RequestInterface;
 use PSX\Http\Environment\HttpResponseInterface;
+use PSX\Http\Exception as StatusCode;
 
 /**
  * ElasticsearchSearch
@@ -50,34 +53,58 @@ class ElasticsearchSearch extends ElasticsearchAbstract
             throw new ConfigurationException('No index provided');
         }
 
-        $match = array_filter([
-            'query' => $request->get('query'),
-            'analyzer' => $request->get('analyzer'),
-            'auto_generate_synonyms_phrase_query' => $request->get('auto_generate_synonyms_phrase_query'),
-            'fuzziness' => $request->get('fuzziness'),
-            'max_expansions' => $request->get('max_expansions'),
-            'prefix_length' => $request->get('prefix_length'),
-            'fuzzy_transpositions' => $request->get('fuzzy_transpositions'),
-            'fuzzy_rewrite' => $request->get('fuzzy_rewrite'),
-            'lenient' => $request->get('lenient'),
-            'operator' => $request->get('operator'),
-            'minimum_should_match' => $request->get('minimum_should_match'),
-            'zero_terms_query' => $request->get('zero_terms_query'),
-        ], function($value){
-            return $value !== null;
-        });
+        $size = $configuration->get('size') ?: 16;
+        $from = (int) $request->get('startIndex');
 
-        $params = [
-            'index' => $index,
-            'body'  => [
-                'query' => [
-                    'match' => $match,
-                ]
-            ]
+        $body = [
+            'size' => $size,
+            'from' => $from,
         ];
 
-        $response = $connection->search($params);
+        $match = $this->getMatch($request);
+        if (count($match) > 0) {
+            $body['query'] = [
+                'match' => $match
+            ];
+        }
 
-        return $this->response->build(200, [], $response);
+        $response = $connection->search([
+            'index' => $index,
+            'body' => $body,
+        ]);
+
+        $totalCount = $response['hits']['total']['value'] ?? 0;
+
+        $data = [];
+        foreach ($response['hits']['hits'] as $hit) {
+            $data[] = ['_id' => $hit['_id']] + $hit['_source'];
+        }
+
+        return $this->response->build(200, [], [
+            'totalResults' => $totalCount,
+            'itemsPerPage' => $size,
+            'startIndex'   => $from,
+            'entry'        => $data,
+        ]);
+    }
+
+    public function configure(BuilderInterface $builder, ElementFactoryInterface $elementFactory): void
+    {
+        parent::configure($builder, $elementFactory);
+
+        $builder->add($elementFactory->newInput('sort', 'Sort', 'text', 'The sort column'));
+        $builder->add($elementFactory->newInput('size', 'Size', 'number', 'The default size of the result (default is 16)'));
+    }
+
+    private function getMatch(RequestInterface $request): array
+    {
+        $query = $request->get('query');
+        if (empty($query)) {
+            return [];
+        } elseif (!is_array($query)) {
+            throw new StatusCode\BadRequestException('The query parameter must contain a field which you want to search i.e. ?query[my_field]=value');
+        } else {
+            return $query;
+        }
     }
 }
