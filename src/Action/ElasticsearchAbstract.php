@@ -40,7 +40,7 @@ abstract class ElasticsearchAbstract extends ActionAbstract
     public function configure(BuilderInterface $builder, ElementFactoryInterface $elementFactory): void
     {
         $builder->add($elementFactory->newConnection('connection', 'Connection', 'The Elasticsearch connection which should be used'));
-        $builder->add($elementFactory->newConnection('index', 'Index', 'The index'));
+        $builder->add($elementFactory->newInput('index', 'Index', 'text', 'The index'));
     }
 
     protected function getConnection(ParametersInterface $configuration): Client
