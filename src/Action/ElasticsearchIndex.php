@@ -44,11 +44,7 @@ class ElasticsearchIndex extends ElasticsearchAbstract
     public function handle(RequestInterface $request, ParametersInterface $configuration, ContextInterface $context): HttpResponseInterface
     {
         $connection = $this->getConnection($configuration);
-
-        $index = $configuration->get('index');
-        if (empty($index)) {
-            throw new ConfigurationException('No index provided');
-        }
+        $index = $this->getIndex($configuration);
 
         $params = [
             'index' => $index,

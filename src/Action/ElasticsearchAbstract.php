@@ -40,6 +40,7 @@ abstract class ElasticsearchAbstract extends ActionAbstract
     public function configure(BuilderInterface $builder, ElementFactoryInterface $elementFactory): void
     {
         $builder->add($elementFactory->newConnection('connection', 'Connection', 'The Elasticsearch connection which should be used'));
+        $builder->add($elementFactory->newConnection('index', 'Index', 'The index'));
     }
 
     protected function getConnection(ParametersInterface $configuration): Client
@@ -50,5 +51,15 @@ abstract class ElasticsearchAbstract extends ActionAbstract
         }
 
         return $connection;
+    }
+
+    protected function getIndex(ParametersInterface $configuration): string
+    {
+        $index = $configuration->get('index');
+        if (empty($index)) {
+            throw new ConfigurationException('No index provided');
+        }
+
+        return $index;
     }
 }
