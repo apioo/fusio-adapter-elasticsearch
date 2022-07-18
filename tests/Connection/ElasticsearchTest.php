@@ -23,9 +23,6 @@ namespace Fusio\Adapter\Elasticsearch\Tests\Connection;
 
 use Elasticsearch\Client;
 use Fusio\Adapter\Elasticsearch\Connection\Elasticsearch;
-use Fusio\Engine\Form\Builder;
-use Fusio\Engine\Form\Container;
-use Fusio\Engine\Form\Element\Tag;
 use Fusio\Engine\Parameters;
 use Fusio\Engine\Test\EngineTestCaseTrait;
 use PHPUnit\Framework\TestCase;
@@ -53,21 +50,6 @@ class ElasticsearchTest extends TestCase
         $connection = $connectionFactory->getConnection($config);
 
         $this->assertInstanceOf(Client::class, $connection);
-    }
-
-    public function testConfigure()
-    {
-        $connection = $this->getConnectionFactory()->factory(Elasticsearch::class);
-        $builder    = new Builder();
-        $factory    = $this->getFormElementFactory();
-
-        $connection->configure($builder, $factory);
-
-        $this->assertInstanceOf(Container::class, $builder->getForm());
-
-        $elements = $builder->getForm()->getElements();
-        $this->assertEquals(1, count($elements));
-        $this->assertInstanceOf(Tag::class, $elements[0]);
     }
 
     public function testPing()
