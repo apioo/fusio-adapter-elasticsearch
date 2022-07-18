@@ -53,12 +53,25 @@ class Elasticsearch implements ConnectionInterface, PingableInterface
             $builder->setHosts($hosts);
         }
 
+        $username = $config->get('username');
+        $password = $config->get('password');
+        if (!empty($username) && !empty($password)) {
+            $builder->setBasicAuthentication($username, $password);
+        }
+
+        if ($config->get('no_verify')) {
+            $builder->setSSLVerification(false);
+        }
+
         return $builder->build();
     }
 
     public function configure(BuilderInterface $builder, ElementFactoryInterface $elementFactory): void
     {
-        $builder->add($elementFactory->newCollection('host', 'Host', 'text', 'List of elasticsearch hosts i.e. <code>192.168.1.1:9200</code>'));
+        $builder->add($elementFactory->newCollection('host', 'Host', 'text', 'List of elasticsearch hosts i.e. <code>https://192.168.1.1:9200</code>'));
+        $builder->add($elementFactory->newInput('username', 'Username', 'text', 'Optional the username'));
+        $builder->add($elementFactory->newInput('password', 'Password', 'password', 'Optional the password'));
+        $builder->add($elementFactory->newCheckbox('no_verify', 'No-SSL-Verify', 'Optional whether to ignore SSL verification'));
     }
 
     public function ping(mixed $connection): bool
