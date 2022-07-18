@@ -11,16 +11,8 @@ jobs:
         php-versions:
          - 8.0
          - 8.1
-    services:
-      elasticsearch:
-        image: elasticsearch:8.3.2
-        options: >-
-          --health-cmd "wget https://localhost:9200/_cat/health -O -"
-          --health-interval 10s
-          --health-timeout 10s
-          --health-retries 10
-        ports:
-          - 9200:9200
+        es-version:
+         - 8.3.0
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -29,6 +21,10 @@ jobs:
         with:
           php-version: ${{ matrix.php-versions }}
           coverage: none
+      - name: Runs Elasticsearch ${{ matrix.es-version }}
+        uses: elastic/elastic-github-actions/elasticsearch@trial-license
+        with:
+          stack-version: ${{ matrix.es-version }}
       - name: Composer install
         run: composer install --no-interaction --no-ansi --no-progress
       - name: Run PHPUnit
