@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Fusio\Adapter\Elasticsearch\Routes;
+namespace Fusio\Adapter\Elasticsearch\Generator;
 
 use Fusio\Adapter\Elasticsearch\Action\ElasticsearchDelete;
 use Fusio\Adapter\Elasticsearch\Action\ElasticsearchGet;
@@ -30,8 +30,8 @@ use Fusio\Engine\Factory\Resolver\PhpClass;
 use Fusio\Engine\Form\BuilderInterface;
 use Fusio\Engine\Form\ElementFactoryInterface;
 use Fusio\Engine\ParametersInterface;
-use Fusio\Engine\Routes\ProviderInterface;
-use Fusio\Engine\Routes\SetupInterface;
+use Fusio\Engine\Generator\ProviderInterface;
+use Fusio\Engine\Generator\SetupInterface;
 
 /**
  * ElasticsearchDocument
