@@ -21,8 +21,8 @@
 
 namespace Fusio\Adapter\Elasticsearch\Connection;
 
-use Elasticsearch\Client;
-use Elasticsearch\ClientBuilder;
+use Elastic\Elasticsearch\Client;
+use Elastic\Elasticsearch\ClientBuilder;
 use Fusio\Engine\Connection\PingableInterface;
 use Fusio\Engine\ConnectionInterface;
 use Fusio\Engine\Form\BuilderInterface;
@@ -57,13 +57,13 @@ class Elasticsearch implements ConnectionInterface, PingableInterface
 
     public function configure(BuilderInterface $builder, ElementFactoryInterface $elementFactory): void
     {
-        $builder->add($elementFactory->newTag('host', 'Host', 'Comma separated list of elasticsearch hosts i.e. <code>192.168.1.1:9200,192.168.1.2</code>'));
+        $builder->add($elementFactory->newCollection('host', 'Host', 'List of elasticsearch hosts i.e. <code>192.168.1.1:9200,192.168.1.2</code>'));
     }
 
     public function ping(mixed $connection): bool
     {
         if ($connection instanceof Client) {
-            return $connection->ping();
+            return $connection->ping()->asBool();
         } else {
             return false;
         }

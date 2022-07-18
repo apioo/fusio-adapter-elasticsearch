@@ -21,7 +21,7 @@
 
 namespace Fusio\Adapter\Elasticsearch\Tests\Connection;
 
-use Elasticsearch\Client;
+use Elastic\Elasticsearch\Client;
 use Fusio\Adapter\Elasticsearch\Connection\Elasticsearch;
 use Fusio\Engine\Parameters;
 use Fusio\Engine\Test\EngineTestCaseTrait;
