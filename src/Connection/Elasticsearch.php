@@ -58,7 +58,7 @@ class Elasticsearch implements ConnectionInterface, PingableInterface
 
     public function configure(BuilderInterface $builder, ElementFactoryInterface $elementFactory): void
     {
-        $builder->add($elementFactory->newCollection('host', 'Host', 'List of elasticsearch hosts i.e. <code>192.168.1.1:9200,192.168.1.2</code>'));
+        $builder->add($elementFactory->newCollection('host', 'Host', 'List of elasticsearch hosts i.e. <code>192.168.1.1:9200</code>'));
     }
 
     public function ping(mixed $connection): bool
