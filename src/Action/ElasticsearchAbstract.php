@@ -21,7 +21,7 @@
 
 namespace Fusio\Adapter\Elasticsearch\Action;
 
-use Elasticsearch\Client;
+use Elastic\Elasticsearch\Client;
 use Fusio\Engine\ActionAbstract;
 use Fusio\Engine\Exception\ConfigurationException;
 use Fusio\Engine\Form\BuilderInterface;
