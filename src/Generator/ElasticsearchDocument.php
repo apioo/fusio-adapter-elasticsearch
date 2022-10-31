@@ -58,25 +58,24 @@ class ElasticsearchDocument implements ProviderInterface
 
     public function setup(SetupInterface $setup, string $basePath, ParametersInterface $configuration): void
     {
-        $prefix = $this->getPrefix($basePath);
         $schemaParameters = $setup->addSchema('Elasticsearch_Search_Parameters', $this->schemaBuilder->getParameters());
 
-        $fetchAllAction = $setup->addAction($prefix . '_Find_All', ElasticsearchSearch::class, PhpClass::class, [
+        $fetchAllAction = $setup->addAction('Elasticsearch_Find_All', ElasticsearchSearch::class, PhpClass::class, [
             'connection' => $configuration->get('connection'),
             'index' => $configuration->get('index'),
         ]);
 
-        $fetchRowAction = $setup->addAction($prefix . '_Find_Row', ElasticsearchGet::class, PhpClass::class, [
+        $fetchRowAction = $setup->addAction('Elasticsearch_Find_Row', ElasticsearchGet::class, PhpClass::class, [
             'connection' => $configuration->get('connection'),
             'index' => $configuration->get('index'),
         ]);
 
-        $deleteAction = $setup->addAction($prefix . '_Delete', ElasticsearchDelete::class, PhpClass::class, [
+        $deleteAction = $setup->addAction('Elasticsearch_Delete', ElasticsearchDelete::class, PhpClass::class, [
             'connection' => $configuration->get('connection'),
             'index' => $configuration->get('index'),
         ]);
 
-        $updateAction = $setup->addAction($prefix . '_Update', ElasticsearchIndex::class, PhpClass::class, [
+        $updateAction = $setup->addAction('Elasticsearch_Update', ElasticsearchIndex::class, PhpClass::class, [
             'connection' => $configuration->get('connection'),
             'index' => $configuration->get('index'),
         ]);
@@ -140,10 +139,5 @@ class ElasticsearchDocument implements ProviderInterface
     {
         $builder->add($elementFactory->newConnection('connection', 'Connection', 'The elasticsearch connection which should be used'));
         $builder->add($elementFactory->newInput('index', 'Index', 'text', 'Name of the index'));
-    }
-
-    private function getPrefix(string $path): string
-    {
-        return implode('_', array_map('ucfirst', array_filter(explode('/', $path))));
     }
 }
