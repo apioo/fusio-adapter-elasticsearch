@@ -22,10 +22,9 @@
 namespace Fusio\Adapter\Elasticsearch\Tests\Connection;
 
 use Elastic\Elasticsearch\Client;
+use Fusio\Adapter\Beanstalk\Tests\ElasticsearchTestCase;
 use Fusio\Adapter\Elasticsearch\Connection\Elasticsearch;
 use Fusio\Engine\Parameters;
-use Fusio\Engine\Test\EngineTestCaseTrait;
-use PHPUnit\Framework\TestCase;
 
 /**
  * ElasticsearchTest
@@ -34,10 +33,8 @@ use PHPUnit\Framework\TestCase;
  * @license http://www.gnu.org/licenses/agpl-3.0
  * @link    https://www.fusio-project.org/
  */
-class ElasticsearchTest extends TestCase
+class ElasticsearchTest extends ElasticsearchTestCase
 {
-    use EngineTestCaseTrait;
-
     public function testGetConnection()
     {
         /** @var Elasticsearch $connectionFactory */
