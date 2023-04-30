@@ -23,6 +23,7 @@ namespace Fusio\Adapter\Elasticsearch\Connection;
 
 use Elastic\Elasticsearch\Client;
 use Elastic\Elasticsearch\ClientBuilder;
+use Elastic\Elasticsearch\Response\Elasticsearch as ElasticsearchResponse;
 use Elastic\Transport\Exception\NoNodeAvailableException;
 use Fusio\Engine\Connection\PingableInterface;
 use Fusio\Engine\ConnectionInterface;
@@ -81,7 +82,12 @@ class Elasticsearch implements ConnectionInterface, PingableInterface
         }
 
         try {
-            return $connection->ping()->asBool();
+            $result = $connection->ping();
+            if ($result instanceof ElasticsearchResponse) {
+                return $result->asBool();
+            } else {
+                return false;
+            }
         } catch (NoNodeAvailableException $e) {
             return false;
         }

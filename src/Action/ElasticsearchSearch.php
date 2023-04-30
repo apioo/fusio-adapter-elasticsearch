@@ -23,7 +23,6 @@ namespace Fusio\Adapter\Elasticsearch\Action;
 
 use Elastic\Elasticsearch\Response\Elasticsearch;
 use Fusio\Engine\ContextInterface;
-use Fusio\Engine\Exception\ConfigurationException;
 use Fusio\Engine\Form\BuilderInterface;
 use Fusio\Engine\Form\ElementFactoryInterface;
 use Fusio\Engine\ParametersInterface;

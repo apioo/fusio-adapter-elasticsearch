@@ -22,7 +22,6 @@
 namespace Fusio\Adapter\Elasticsearch\Action;
 
 use Fusio\Engine\ContextInterface;
-use Fusio\Engine\Exception\ConfigurationException;
 use Fusio\Engine\ParametersInterface;
 use Fusio\Engine\RequestInterface;
 use PSX\Http\Environment\HttpResponseInterface;
