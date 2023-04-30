@@ -22,8 +22,8 @@
 namespace Fusio\Adapter\Elasticsearch\Tests\Connection;
 
 use Elastic\Elasticsearch\Client;
-use Fusio\Adapter\Beanstalk\Tests\ElasticsearchTestCase;
 use Fusio\Adapter\Elasticsearch\Connection\Elasticsearch;
+use Fusio\Adapter\Elasticsearch\Tests\ElasticsearchTestCase;
 use Fusio\Engine\Parameters;
 
 /**

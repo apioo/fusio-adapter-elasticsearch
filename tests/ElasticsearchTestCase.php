@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Fusio\Adapter\Beanstalk\Tests;
+namespace Fusio\Adapter\Elasticsearch\Tests;
 
 use Fusio\Adapter\Elasticsearch\Action\ElasticsearchDelete;
 use Fusio\Adapter\Elasticsearch\Action\ElasticsearchGet;
