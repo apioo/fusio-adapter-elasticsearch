@@ -3,7 +3,7 @@
  * Fusio
  * A web-application to create dynamically RESTful APIs
  *
- * Copyright (C) 2015-2022 Christoph Kappestein <christoph.kappestein@gmail.com>
+ * Copyright (C) 2015-2023 Christoph Kappestein <christoph.kappestein@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 
 namespace Fusio\Adapter\Elasticsearch\Action;
 
+use Elastic\Elasticsearch\Response\Elasticsearch;
 use Fusio\Engine\ContextInterface;
 use Fusio\Engine\Exception\ConfigurationException;
 use Fusio\Engine\Form\BuilderInterface;
@@ -29,6 +30,7 @@ use Fusio\Engine\ParametersInterface;
 use Fusio\Engine\RequestInterface;
 use PSX\Http\Environment\HttpResponseInterface;
 use PSX\Http\Exception as StatusCode;
+use PSX\Http\Exception\InternalServerErrorException;
 
 /**
  * ElasticsearchSearch
@@ -68,6 +70,10 @@ class ElasticsearchSearch extends ElasticsearchAbstract
             'index' => $index,
             'body' => $body,
         ]);
+
+        if (!$response instanceof Elasticsearch) {
+            throw new InternalServerErrorException('Connection returned an invalid response');
+        }
 
         $totalCount = $response['hits']['total']['value'] ?? 0;
 

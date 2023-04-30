@@ -30,12 +30,12 @@ namespace Fusio\Adapter\Elasticsearch\Generator;
  */
 class SchemaBuilder
 {
-    public function getParameters()
+    public function getParameters(): array
     {
         return $this->readSchema(__DIR__ . '/schema/elasticsearch-document/parameters.json');
     }
 
-    private function readSchema(string $file)
+    private function readSchema(string $file): array
     {
         return \json_decode(\file_get_contents($file), true);
     }
