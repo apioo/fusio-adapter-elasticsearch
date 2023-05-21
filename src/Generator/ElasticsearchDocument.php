@@ -23,8 +23,8 @@ namespace Fusio\Adapter\Elasticsearch\Generator;
 
 use Fusio\Adapter\Elasticsearch\Action\ElasticsearchDelete;
 use Fusio\Adapter\Elasticsearch\Action\ElasticsearchGet;
-use Fusio\Adapter\Elasticsearch\Action\ElasticsearchIndex;
-use Fusio\Adapter\Elasticsearch\Action\ElasticsearchSearch;
+use Fusio\Adapter\Elasticsearch\Action\ElasticsearchUpdate;
+use Fusio\Adapter\Elasticsearch\Action\ElasticsearchGetAll;
 use Fusio\Engine\ConnectorInterface;
 use Fusio\Engine\Factory\Resolver\PhpClass;
 use Fusio\Engine\Form\BuilderInterface;
@@ -32,6 +32,12 @@ use Fusio\Engine\Form\ElementFactoryInterface;
 use Fusio\Engine\Generator\ProviderInterface;
 use Fusio\Engine\Generator\SetupInterface;
 use Fusio\Engine\ParametersInterface;
+use Fusio\Model\Backend\Action;
+use Fusio\Model\Backend\ActionConfig;
+use Fusio\Model\Backend\Operation;
+use Fusio\Model\Backend\OperationParameters;
+use Fusio\Model\Backend\Schema;
+use Fusio\Model\Backend\SchemaSource;
 
 /**
  * ElasticsearchDocument
@@ -43,12 +49,10 @@ use Fusio\Engine\ParametersInterface;
 class ElasticsearchDocument implements ProviderInterface
 {
     private ConnectorInterface $connector;
-    private SchemaBuilder $schemaBuilder;
 
     public function __construct(ConnectorInterface $connector)
     {
         $this->connector = $connector;
-        $this->schemaBuilder = new SchemaBuilder();
     }
 
     public function getName(): string
@@ -58,86 +62,110 @@ class ElasticsearchDocument implements ProviderInterface
 
     public function setup(SetupInterface $setup, string $basePath, ParametersInterface $configuration): void
     {
-        $schemaParameters = $setup->addSchema('Elasticsearch_Search_Parameters', $this->schemaBuilder->getParameters());
+        $setup->addAction($this->makeGetAllAction($configuration));
+        $setup->addAction($this->makeGetAction($configuration));
+        $setup->addAction($this->makeUpdateAction($configuration));
+        $setup->addAction($this->makeDeleteAction($configuration));
 
-        $fetchAllAction = $setup->addAction('Elasticsearch_Find_All', ElasticsearchSearch::class, PhpClass::class, [
-            'connection' => $configuration->get('connection'),
-            'index' => $configuration->get('index'),
-        ]);
-
-        $fetchRowAction = $setup->addAction('Elasticsearch_Find_Row', ElasticsearchGet::class, PhpClass::class, [
-            'connection' => $configuration->get('connection'),
-            'index' => $configuration->get('index'),
-        ]);
-
-        $deleteAction = $setup->addAction('Elasticsearch_Delete', ElasticsearchDelete::class, PhpClass::class, [
-            'connection' => $configuration->get('connection'),
-            'index' => $configuration->get('index'),
-        ]);
-
-        $updateAction = $setup->addAction('Elasticsearch_Update', ElasticsearchIndex::class, PhpClass::class, [
-            'connection' => $configuration->get('connection'),
-            'index' => $configuration->get('index'),
-        ]);
-
-        $setup->addRoute(1, '/', 'Fusio\Impl\Controller\SchemaApiController', [], [
-            [
-                'version' => 1,
-                'methods' => [
-                    'GET' => [
-                        'active' => true,
-                        'public' => true,
-                        'description' => 'Returns a collection of documents',
-                        'parameters' => $schemaParameters,
-                        'responses' => [
-                            200 => -1,
-                        ],
-                        'action' => $fetchAllAction,
-                    ],
-                ],
-            ]
-        ]);
-
-        $setup->addRoute(1, '/:id', 'Fusio\Impl\Controller\SchemaApiController', [], [
-            [
-                'version' => 1,
-                'methods' => [
-                    'GET' => [
-                        'active' => true,
-                        'public' => true,
-                        'description' => 'Returns a single document',
-                        'responses' => [
-                            200 => -1,
-                        ],
-                        'action' => $fetchRowAction,
-                    ],
-                    'PUT' => [
-                        'active' => true,
-                        'public' => false,
-                        'description' => 'Updates an existing document',
-                        'request' => -1,
-                        'responses' => [
-                            200 => -1,
-                        ],
-                        'action' => $updateAction,
-                    ],
-                    'DELETE' => [
-                        'active' => true,
-                        'public' => false,
-                        'description' => 'Deletes an existing document',
-                        'responses' => [
-                            200 => -1,
-                        ],
-                        'action' => $deleteAction,
-                    ]
-                ],
-            ]
-        ]);
+        $setup->addOperation($this->makeGetAllOperation());
+        $setup->addOperation($this->makeGetOperation());
+        $setup->addOperation($this->makeUpdateOperation());
+        $setup->addOperation($this->makeDeleteOperation());
     }
 
     public function configure(BuilderInterface $builder, ElementFactoryInterface $elementFactory): void
     {
         $builder->add($elementFactory->newConnection('connection', 'Connection', 'The elasticsearch connection which should be used'));
         $builder->add($elementFactory->newInput('index', 'Index', 'text', 'Name of the index'));
+    }
+
+    private function makeGetAllAction(ParametersInterface $configuration): Action
+    {
+        $action = new Action();
+        $action->setName('Elasticsearch_GetAll');
+        $action->setClass(ElasticsearchGetAll::class);
+        $action->setEngine(PhpClass::class);
+        $action->setConfig(ActionConfig::fromArray([
+            'connection' => $configuration->get('connection'),
+            'index' => $configuration->get('index'),
+        ]));
+        return $action;
+    }
+
+    private function makeGetAction(ParametersInterface $configuration): Action
+    {
+        $action = new Action();
+        $action->setName('Elasticsearch_Get');
+        $action->setClass(ElasticsearchGet::class);
+        $action->setEngine(PhpClass::class);
+        $action->setConfig(ActionConfig::fromArray([
+            'connection' => $configuration->get('connection'),
+            'index' => $configuration->get('index'),
+        ]));
+        return $action;
+    }
+
+    private function makeUpdateAction(ParametersInterface $configuration): Action
+    {
+        $action = new Action();
+        $action->setName('Elasticsearch_Update');
+        $action->setClass(ElasticsearchUpdate::class);
+        $action->setEngine(PhpClass::class);
+        $action->setConfig(ActionConfig::fromArray([
+            'connection' => $configuration->get('connection'),
+            'index' => $configuration->get('index'),
+        ]));
+        return $action;
+    }
+
+    private function makeDeleteAction(ParametersInterface $configuration): Action
+    {
+        $action = new Action();
+        $action->setName('Elasticsearch_Delete');
+        $action->setClass(ElasticsearchDelete::class);
+        $action->setEngine(PhpClass::class);
+        $action->setConfig(ActionConfig::fromArray([
+            'connection' => $configuration->get('connection'),
+            'index' => $configuration->get('index'),
+        ]));
+        return $action;
+    }
+
+    private function makeGetAllOperation(): Operation
+    {
+        $parameters = new OperationParameters();
+        $parameters->put('query', ['type' => 'string']);
+        $parameters->put('startIndex', ['type' => 'integer']);
+
+        $operation = new Operation();
+        $operation->setName('getAll');
+        $operation->setParameters($parameters);
+        $operation->setOutgoing('Passthru');
+        return $operation;
+    }
+
+    private function makeGetOperation(): Operation
+    {
+        $operation = new Operation();
+        $operation->setName('get');
+        $operation->setOutgoing('Passthru');
+        return $operation;
+    }
+
+    private function makeUpdateOperation(): Operation
+    {
+        $operation = new Operation();
+        $operation->setName('index');
+        $operation->setIncoming('Passthru');
+        $operation->setOutgoing('Passthru');
+        return $operation;
+    }
+
+    private function makeDeleteOperation(): Operation
+    {
+        $operation = new Operation();
+        $operation->setName('delete');
+        $operation->setOutgoing('Passthru');
+        return $operation;
     }
 }

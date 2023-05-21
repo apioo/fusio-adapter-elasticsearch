@@ -32,17 +32,17 @@ use PSX\Http\Exception as StatusCode;
 use PSX\Http\Exception\InternalServerErrorException;
 
 /**
- * ElasticsearchSearch
+ * ElasticsearchGetAll
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.gnu.org/licenses/gpl-3.0
  * @link    https://www.fusio-project.org/
  */
-class ElasticsearchSearch extends ElasticsearchAbstract
+class ElasticsearchGetAll extends ElasticsearchAbstract
 {
     public function getName(): string
     {
-        return 'Elasticsearch-Search';
+        return 'Elasticsearch-GetAll';
     }
 
     public function handle(RequestInterface $request, ParametersInterface $configuration, ContextInterface $context): HttpResponseInterface

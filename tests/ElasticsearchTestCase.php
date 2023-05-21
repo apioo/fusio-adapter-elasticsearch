@@ -23,8 +23,8 @@ namespace Fusio\Adapter\Elasticsearch\Tests;
 
 use Fusio\Adapter\Elasticsearch\Action\ElasticsearchDelete;
 use Fusio\Adapter\Elasticsearch\Action\ElasticsearchGet;
-use Fusio\Adapter\Elasticsearch\Action\ElasticsearchIndex;
-use Fusio\Adapter\Elasticsearch\Action\ElasticsearchSearch;
+use Fusio\Adapter\Elasticsearch\Action\ElasticsearchUpdate;
+use Fusio\Adapter\Elasticsearch\Action\ElasticsearchGetAll;
 use Fusio\Adapter\Elasticsearch\Connection\Elasticsearch;
 use Fusio\Adapter\Elasticsearch\Generator\ElasticsearchDocument;
 use Fusio\Engine\Action\Runtime;
@@ -49,8 +49,8 @@ abstract class ElasticsearchTestCase extends TestCase
         $container->set(Elasticsearch::class, new Elasticsearch());
         $container->set(ElasticsearchDelete::class, new ElasticsearchDelete($runtime));
         $container->set(ElasticsearchGet::class, new ElasticsearchGet($runtime));
-        $container->set(ElasticsearchIndex::class, new ElasticsearchIndex($runtime));
-        $container->set(ElasticsearchSearch::class, new ElasticsearchSearch($runtime));
+        $container->set(ElasticsearchUpdate::class, new ElasticsearchUpdate($runtime));
+        $container->set(ElasticsearchGetAll::class, new ElasticsearchGetAll($runtime));
         $container->set(ElasticsearchDocument::class, new ElasticsearchDocument($container->get(ConnectorInterface::class)));
     }
 }

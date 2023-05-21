@@ -33,11 +33,11 @@ use PSX\Http\Environment\HttpResponseInterface;
  * @license http://www.gnu.org/licenses/gpl-3.0
  * @link    https://www.fusio-project.org/
  */
-class ElasticsearchIndex extends ElasticsearchAbstract
+class ElasticsearchUpdate extends ElasticsearchAbstract
 {
     public function getName(): string
     {
-        return 'Elasticsearch-Index';
+        return 'Elasticsearch-Update';
     }
 
     public function handle(RequestInterface $request, ParametersInterface $configuration, ContextInterface $context): HttpResponseInterface
