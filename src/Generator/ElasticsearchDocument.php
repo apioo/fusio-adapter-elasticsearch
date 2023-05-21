@@ -146,6 +146,10 @@ class ElasticsearchDocument implements ProviderInterface
 
         $operation = new Operation();
         $operation->setName('getAll');
+        $operation->setDescription('Returns a collection of documents');
+        $operation->setHttpMethod('GET');
+        $operation->setHttpPath('/');
+        $operation->setHttpCode(200);
         $operation->setParameters($parameters);
         $operation->setOutgoing('Passthru');
         return $operation;
@@ -155,6 +159,10 @@ class ElasticsearchDocument implements ProviderInterface
     {
         $operation = new Operation();
         $operation->setName('get');
+        $operation->setDescription('Returns a single document');
+        $operation->setHttpMethod('GET');
+        $operation->setHttpPath('/:id');
+        $operation->setHttpCode(200);
         $operation->setOutgoing('Passthru');
         return $operation;
     }
@@ -163,6 +171,10 @@ class ElasticsearchDocument implements ProviderInterface
     {
         $operation = new Operation();
         $operation->setName('index');
+        $operation->setDescription('Updates an existing document');
+        $operation->setHttpMethod('PUT');
+        $operation->setHttpPath('/:id');
+        $operation->setHttpCode(200);
         $operation->setIncoming('Passthru');
         $operation->setOutgoing('Passthru');
         return $operation;
@@ -172,6 +184,10 @@ class ElasticsearchDocument implements ProviderInterface
     {
         $operation = new Operation();
         $operation->setName('delete');
+        $operation->setDescription('Deletes an existing document');
+        $operation->setHttpMethod('DELETE');
+        $operation->setHttpPath('/:id');
+        $operation->setHttpCode(200);
         $operation->setOutgoing('Passthru');
         return $operation;
     }
