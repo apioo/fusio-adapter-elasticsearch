@@ -36,6 +36,7 @@ use Fusio\Model\Backend\Action;
 use Fusio\Model\Backend\ActionConfig;
 use Fusio\Model\Backend\Operation;
 use Fusio\Model\Backend\OperationParameters;
+use Fusio\Model\Backend\OperationSchema;
 use Fusio\Model\Backend\Schema;
 use Fusio\Model\Backend\SchemaSource;
 
@@ -133,9 +134,15 @@ class ElasticsearchDocument implements ProviderInterface
 
     private function makeGetAllOperation(): Operation
     {
+        $querySchema = new OperationSchema();
+        $querySchema->setType('string');
+
+        $startIndexSchema = new OperationSchema();
+        $startIndexSchema->setType('integer');
+
         $parameters = new OperationParameters();
-        $parameters->put('query', ['type' => 'string']);
-        $parameters->put('startIndex', ['type' => 'integer']);
+        $parameters->put('query', $querySchema);
+        $parameters->put('startIndex', $startIndexSchema);
 
         $operation = new Operation();
         $operation->setName('getAll');
