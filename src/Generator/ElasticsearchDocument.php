@@ -23,9 +23,8 @@ namespace Fusio\Adapter\Elasticsearch\Generator;
 
 use Fusio\Adapter\Elasticsearch\Action\ElasticsearchDelete;
 use Fusio\Adapter\Elasticsearch\Action\ElasticsearchGet;
-use Fusio\Adapter\Elasticsearch\Action\ElasticsearchUpdate;
 use Fusio\Adapter\Elasticsearch\Action\ElasticsearchGetAll;
-use Fusio\Engine\ConnectorInterface;
+use Fusio\Adapter\Elasticsearch\Action\ElasticsearchUpdate;
 use Fusio\Engine\Factory\Resolver\PhpClass;
 use Fusio\Engine\Form\BuilderInterface;
 use Fusio\Engine\Form\ElementFactoryInterface;
@@ -34,13 +33,10 @@ use Fusio\Engine\Generator\SetupInterface;
 use Fusio\Engine\ParametersInterface;
 use Fusio\Engine\Schema\SchemaBuilder;
 use Fusio\Engine\Schema\SchemaName;
-use Fusio\Model\Backend\Action;
 use Fusio\Model\Backend\ActionConfig;
-use Fusio\Model\Backend\Operation;
-use Fusio\Model\Backend\OperationParameters;
-use Fusio\Model\Backend\OperationSchema;
-use Fusio\Model\Backend\Schema;
-use Fusio\Model\Backend\SchemaSource;
+use Fusio\Model\Backend\ActionCreate;
+use Fusio\Model\Backend\OperationCreate;
+use Fusio\Model\Backend\SchemaCreate;
 
 /**
  * ElasticsearchDocument
@@ -83,17 +79,17 @@ class ElasticsearchDocument implements ProviderInterface
         $builder->add($elementFactory->newInput('index', 'Index', 'text', 'Name of the index'));
     }
 
-    private function makeGetAllSchema(): Schema
+    private function makeGetAllSchema(): SchemaCreate
     {
-        $schema = new Schema();
+        $schema = new SchemaCreate();
         $schema->setName(self::SCHEMA_GET_ALL);
-        $schema->setSource(SchemaBuilder::makeCollectionResponse(self::SCHEMA_GET_ALL));
+        $schema->setSource(SchemaBuilder::makeCollectionResponse(self::SCHEMA_GET_ALL, null));
         return $schema;
     }
 
-    private function makeGetAllAction(ParametersInterface $configuration): Action
+    private function makeGetAllAction(ParametersInterface $configuration): ActionCreate
     {
-        $action = new Action();
+        $action = new ActionCreate();
         $action->setName(self::ACTION_GET_ALL);
         $action->setClass(ElasticsearchGetAll::class);
         $action->setEngine(PhpClass::class);
@@ -104,9 +100,9 @@ class ElasticsearchDocument implements ProviderInterface
         return $action;
     }
 
-    private function makeGetAction(ParametersInterface $configuration): Action
+    private function makeGetAction(ParametersInterface $configuration): ActionCreate
     {
-        $action = new Action();
+        $action = new ActionCreate();
         $action->setName(self::ACTION_GET);
         $action->setClass(ElasticsearchGet::class);
         $action->setEngine(PhpClass::class);
@@ -117,9 +113,9 @@ class ElasticsearchDocument implements ProviderInterface
         return $action;
     }
 
-    private function makeUpdateAction(ParametersInterface $configuration): Action
+    private function makeUpdateAction(ParametersInterface $configuration): ActionCreate
     {
-        $action = new Action();
+        $action = new ActionCreate();
         $action->setName(self::ACTION_UPDATE);
         $action->setClass(ElasticsearchUpdate::class);
         $action->setEngine(PhpClass::class);
@@ -130,9 +126,9 @@ class ElasticsearchDocument implements ProviderInterface
         return $action;
     }
 
-    private function makeDeleteAction(ParametersInterface $configuration): Action
+    private function makeDeleteAction(ParametersInterface $configuration): ActionCreate
     {
-        $action = new Action();
+        $action = new ActionCreate();
         $action->setName(self::ACTION_DELETE);
         $action->setClass(ElasticsearchDelete::class);
         $action->setEngine(PhpClass::class);
@@ -143,9 +139,9 @@ class ElasticsearchDocument implements ProviderInterface
         return $action;
     }
 
-    private function makeGetAllOperation(): Operation
+    private function makeGetAllOperation(): OperationCreate
     {
-        $operation = new Operation();
+        $operation = new OperationCreate();
         $operation->setName('getAll');
         $operation->setDescription('Returns a collection of documents');
         $operation->setHttpMethod('GET');
@@ -157,9 +153,9 @@ class ElasticsearchDocument implements ProviderInterface
         return $operation;
     }
 
-    private function makeGetOperation(): Operation
+    private function makeGetOperation(): OperationCreate
     {
-        $operation = new Operation();
+        $operation = new OperationCreate();
         $operation->setName('get');
         $operation->setDescription('Returns a single document');
         $operation->setHttpMethod('GET');
@@ -170,9 +166,9 @@ class ElasticsearchDocument implements ProviderInterface
         return $operation;
     }
 
-    private function makeUpdateOperation(): Operation
+    private function makeUpdateOperation(): OperationCreate
     {
-        $operation = new Operation();
+        $operation = new OperationCreate();
         $operation->setName('index');
         $operation->setDescription('Updates an existing document');
         $operation->setHttpMethod('PUT');
@@ -184,9 +180,9 @@ class ElasticsearchDocument implements ProviderInterface
         return $operation;
     }
 
-    private function makeDeleteOperation(): Operation
+    private function makeDeleteOperation(): OperationCreate
     {
-        $operation = new Operation();
+        $operation = new OperationCreate();
         $operation->setName('delete');
         $operation->setDescription('Deletes an existing document');
         $operation->setHttpMethod('DELETE');
