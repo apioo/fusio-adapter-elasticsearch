@@ -58,7 +58,7 @@ class ElasticsearchDocument implements ProviderInterface
         return 'Elasticsearch-Document';
     }
 
-    public function setup(SetupInterface $setup, string $basePath, ParametersInterface $configuration): void
+    public function setup(SetupInterface $setup, ParametersInterface $configuration): void
     {
         $setup->addSchema($this->makeGetAllSchema());
 
