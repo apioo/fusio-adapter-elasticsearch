@@ -92,7 +92,6 @@ class ElasticsearchDocument implements ProviderInterface
         $action = new ActionCreate();
         $action->setName(self::ACTION_GET_ALL);
         $action->setClass(ElasticsearchGetAll::class);
-        $action->setEngine(PhpClass::class);
         $action->setConfig(ActionConfig::fromArray([
             'connection' => $configuration->get('connection'),
             'index' => $configuration->get('index'),
@@ -105,7 +104,6 @@ class ElasticsearchDocument implements ProviderInterface
         $action = new ActionCreate();
         $action->setName(self::ACTION_GET);
         $action->setClass(ElasticsearchGet::class);
-        $action->setEngine(PhpClass::class);
         $action->setConfig(ActionConfig::fromArray([
             'connection' => $configuration->get('connection'),
             'index' => $configuration->get('index'),
@@ -118,7 +116,6 @@ class ElasticsearchDocument implements ProviderInterface
         $action = new ActionCreate();
         $action->setName(self::ACTION_UPDATE);
         $action->setClass(ElasticsearchUpdate::class);
-        $action->setEngine(PhpClass::class);
         $action->setConfig(ActionConfig::fromArray([
             'connection' => $configuration->get('connection'),
             'index' => $configuration->get('index'),
@@ -131,7 +128,6 @@ class ElasticsearchDocument implements ProviderInterface
         $action = new ActionCreate();
         $action->setName(self::ACTION_DELETE);
         $action->setClass(ElasticsearchDelete::class);
-        $action->setEngine(PhpClass::class);
         $action->setConfig(ActionConfig::fromArray([
             'connection' => $configuration->get('connection'),
             'index' => $configuration->get('index'),
