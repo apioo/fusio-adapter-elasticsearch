@@ -21,17 +21,9 @@
 
 namespace Fusio\Adapter\Elasticsearch\Tests;
 
-use Fusio\Adapter\Elasticsearch\Action\ElasticsearchDelete;
-use Fusio\Adapter\Elasticsearch\Action\ElasticsearchGet;
-use Fusio\Adapter\Elasticsearch\Action\ElasticsearchUpdate;
-use Fusio\Adapter\Elasticsearch\Action\ElasticsearchGetAll;
-use Fusio\Adapter\Elasticsearch\Connection\Elasticsearch;
-use Fusio\Adapter\Elasticsearch\Generator\ElasticsearchDocument;
-use Fusio\Engine\Action\Runtime;
-use Fusio\Engine\ConnectorInterface;
+use Fusio\Adapter\Elasticsearch\Adapter;
 use Fusio\Engine\Test\EngineTestCaseTrait;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\DependencyInjection\Container;
 
 /**
  * ElasticsearchTestCase
@@ -44,13 +36,8 @@ abstract class ElasticsearchTestCase extends TestCase
 {
     use EngineTestCaseTrait;
 
-    protected function configure(Runtime $runtime, Container $container): void
+    protected function getAdapterClass(): string
     {
-        $container->set(Elasticsearch::class, new Elasticsearch());
-        $container->set(ElasticsearchDelete::class, new ElasticsearchDelete($runtime));
-        $container->set(ElasticsearchGet::class, new ElasticsearchGet($runtime));
-        $container->set(ElasticsearchUpdate::class, new ElasticsearchUpdate($runtime));
-        $container->set(ElasticsearchGetAll::class, new ElasticsearchGetAll($runtime));
-        $container->set(ElasticsearchDocument::class, new ElasticsearchDocument($container->get(ConnectorInterface::class)));
+        return Adapter::class;
     }
 }
