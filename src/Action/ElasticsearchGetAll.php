@@ -65,6 +65,7 @@ class ElasticsearchGetAll extends ElasticsearchAbstract
             ];
         }
 
+        /** @psalm-suppress InvalidArgument */
         $response = $connection->search([
             'index' => $index,
             'body' => $body,
