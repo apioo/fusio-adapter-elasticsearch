@@ -94,7 +94,6 @@ class ElasticsearchGetAll extends ElasticsearchAbstract
     {
         parent::configure($builder, $elementFactory);
 
-        $builder->add($elementFactory->newInput('sort', 'Sort', 'text', 'The sort column'));
         $builder->add($elementFactory->newInput('size', 'Size', 'number', 'The default size of the result (default is 16)'));
     }
 
