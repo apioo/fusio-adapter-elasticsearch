@@ -24,7 +24,6 @@ use Fusio\Adapter\Elasticsearch\Action\ElasticsearchDelete;
 use Fusio\Adapter\Elasticsearch\Action\ElasticsearchGet;
 use Fusio\Adapter\Elasticsearch\Action\ElasticsearchGetAll;
 use Fusio\Adapter\Elasticsearch\Action\ElasticsearchUpdate;
-use Fusio\Engine\Factory\Resolver\PhpClass;
 use Fusio\Engine\Form\BuilderInterface;
 use Fusio\Engine\Form\ElementFactoryInterface;
 use Fusio\Engine\Generator\ProviderInterface;
