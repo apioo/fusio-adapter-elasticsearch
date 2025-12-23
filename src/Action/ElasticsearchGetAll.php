@@ -97,6 +97,9 @@ class ElasticsearchGetAll extends ElasticsearchAbstract
         $builder->add($elementFactory->newInput('size', 'Size', 'number', 'The default size of the result (default is 16)'));
     }
 
+    /**
+     * @return array<string, string>
+     */
     private function getMatch(RequestInterface $request): array
     {
         $query = $request->get('query');

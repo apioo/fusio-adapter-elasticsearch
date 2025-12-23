@@ -34,7 +34,7 @@ use Fusio\Engine\Parameters;
  */
 class ElasticsearchTest extends ElasticsearchTestCase
 {
-    public function testGetConnection()
+    public function testGetConnection(): void
     {
         /** @var Elasticsearch $connectionFactory */
         $connectionFactory = $this->getConnectionFactory()->factory(Elasticsearch::class);
@@ -51,7 +51,7 @@ class ElasticsearchTest extends ElasticsearchTestCase
         $this->assertInstanceOf(Client::class, $connection);
     }
 
-    public function testPing()
+    public function testPing(): void
     {
         /** @var Elasticsearch $connectionFactory */
         $connectionFactory = $this->getConnectionFactory()->factory(Elasticsearch::class);
