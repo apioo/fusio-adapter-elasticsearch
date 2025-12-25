@@ -21,6 +21,7 @@
 namespace Fusio\Adapter\Elasticsearch\Tests\Connection;
 
 use Elastic\Elasticsearch\Client;
+use Elastic\Elasticsearch\Response\Elasticsearch as ResponseElasticsearch;
 use Fusio\Adapter\Elasticsearch\Connection\Elasticsearch;
 use Fusio\Adapter\Elasticsearch\Tests\ElasticsearchTestCase;
 use Fusio\Engine\Parameters;
@@ -49,7 +50,10 @@ class ElasticsearchTest extends ElasticsearchTestCase
         $connection = $connectionFactory->getConnection($config);
 
         $this->assertInstanceOf(Client::class, $connection);
-        $this->assertSame(200, $connection->search()->getStatusCode());
+
+        $result = $connection->search();
+        $this->assertInstanceOf(ResponseElasticsearch::class, $result);
+        $this->assertSame(200, $result->getStatusCode());
     }
 
     public function testPing(): void
