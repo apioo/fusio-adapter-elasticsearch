@@ -49,6 +49,7 @@ class ElasticsearchTest extends ElasticsearchTestCase
         $connection = $connectionFactory->getConnection($config);
 
         $this->assertInstanceOf(Client::class, $connection);
+        $this->assertSame(200, $connection->search()->getStatusCode());
     }
 
     public function testPing(): void
