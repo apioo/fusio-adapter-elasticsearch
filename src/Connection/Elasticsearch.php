@@ -59,6 +59,8 @@ class Elasticsearch extends ConnectionAbstract implements PingableInterface
         $password = $config->get('password');
         if (!empty($username) && !empty($password)) {
             $builder->setBasicAuthentication($username, $password);
+        } elseif (!empty($password)) {
+            $builder->setApiKey($password);
         }
 
         if ($config->get('no_verify')) {
@@ -72,7 +74,7 @@ class Elasticsearch extends ConnectionAbstract implements PingableInterface
     {
         $builder->add($elementFactory->newCollection('host', 'Host', 'text', 'List of elasticsearch hosts i.e. <code>https://192.168.1.1:9200</code>'));
         $builder->add($elementFactory->newInput('username', 'Username', 'text', 'Optional the username'));
-        $builder->add($elementFactory->newInput('password', 'Password', 'password', 'Optional the password'));
+        $builder->add($elementFactory->newInput('password', 'Password', 'password', 'Optional the password / api key'));
         $builder->add($elementFactory->newCheckbox('no_verify', 'No-SSL-Verify', 'Optional whether to ignore SSL verification'));
     }
 
