@@ -37,9 +37,10 @@ jobs:
           php-version: ${{ matrix.php-versions }}
           coverage: none
       - name: Runs Elasticsearch ${{ matrix.es-version }}
-        uses: elastic/elastic-github-actions/elasticsearch@trial-license
+        uses: elastic/elastic-github-actions/elasticsearch@master
         with:
           stack-version: ${{ matrix.es-version }}
+          security-enabled: false
       - name: Composer install
         run: composer install --no-interaction --no-ansi --no-progress
       - name: Run PHPUnit
