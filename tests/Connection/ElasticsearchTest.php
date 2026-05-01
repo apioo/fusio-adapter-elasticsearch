@@ -41,9 +41,9 @@ class ElasticsearchTest extends ElasticsearchTestCase
         $connectionFactory = $this->getConnectionFactory()->factory(Elasticsearch::class);
 
         $config = new Parameters([
-            'host' => ['https://127.0.0.1:9200'],
-            'username' => 'elastic',
-            'password' => 'changeme',
+            'host' => ['http://127.0.0.1:9200'],
+            'username' => '',
+            'password' => '',
             'no_verify' => true,
         ]);
 
@@ -62,9 +62,9 @@ class ElasticsearchTest extends ElasticsearchTestCase
         $connectionFactory = $this->getConnectionFactory()->factory(Elasticsearch::class);
 
         $config = new Parameters([
-            'host' => ['https://127.0.0.1:9200'],
-            'username' => 'elastic',
-            'password' => 'changeme',
+            'host' => ['http://127.0.0.1:9200'],
+            'username' => '',
+            'password' => '',
             'no_verify' => true,
         ]);
 
