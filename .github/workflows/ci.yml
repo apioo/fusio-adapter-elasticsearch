@@ -27,7 +27,7 @@ jobs:
           - 8.3
           - 8.4
         es-version:
-          - 8.10.2
+          - 8.17.0
     services:
       elasticsearch:
         image: docker.elastic.co/elasticsearch/elasticsearch:${{ matrix.es-version }}
